@@ -11,21 +11,31 @@ networks:
 services:
   orderer.example.com:
     container_name: orderer.example.com
-    image: hyperledger/fabric-orderer
+    image: hyperledger/fabric-orderer:$IMAGE_TAG
     environment:
-      - FABRIC_LOGGING_SPEC=info
+      - FABRIC_LOGGING_SPEC=debug
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_GENESISMETHOD=file
-      - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/fabric/genesis.block
+      - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/genesis.block
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
       - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/fabric/msp
+      # enabled TLS
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/etc/hyperledger/fabric/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/etc/hyperledger/fabric/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/etc/hyperledger/fabric/tls/ca.crt, /etc/hyperledger/fabric/orgh1/tls/ca.crt, /etc/hyperledger/fabric/orgh2/tls/ca.crt, /etc/hyperledger/fabric/orgp1/tls/ca.crt, /etc/hyperledger/fabric/orgw/tls/ca.crt]
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
     command: orderer
     ports:
       - 7050:7050
     volumes:
-        - ./config/:/etc/hyperledger/fabric
+        - ./config:/etc/hyperledger/configtx
         - ./crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls:/etc/hyperledger/fabric/tls
+        - ./crypto-config/peerOrganizations/orgh1.example.com/peers/peer0.orgh1.example.com/:/etc/hyperledger/fabric/orgh1
+        - ./crypto-config/peerOrganizations/orgh2.example.com/peers/peer0.orgh2.example.com/:/etc/hyperledger/fabric/orgh2
+        - ./crypto-config/peerOrganizations/orgp1.example.com/peers/peer0.orgp1.example.com/:/etc/hyperledger/fabric/orgp1
+        - ./crypto-config/peerOrganizations/orgw.example.com/peers/peer0.orgw.example.com/:/etc/hyperledger/fabric/orgw
     networks:
       - basic
   
@@ -175,8 +185,8 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.orgw.example.com:7051
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbw0:5984
     ports:
-      - 9051:7051
-      - 9053:7053
+      - 10051:7051
+      - 10053:7053
     volumes:
         - /var/run/:/host/var/run/
         - ./crypto-config/peerOrganizations/orgw.example.com/peers/peer0.orgw.example.com/msp:/etc/hyperledger/fabric/msp
@@ -215,8 +225,8 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.orgw.example.com:7051
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbw1:5984
     ports:
-      - 10051:7051
-      - 10053:7053
+      - 11051:7051
+      - 11053:7053
     volumes:
         - /var/run/:/host/var/run/
         - ./crypto-config/peerOrganizations/orgw.example.com/peers/peer1.orgw.example.com/msp:/etc/hyperledger/fabric/msp
@@ -231,7 +241,7 @@ services:
 
   cli:
     container_name: cli
-    image: hyperledger/fabric-tools
+    image: hyperledger/fabric-tools:$IMAGE_TAG
     tty: true
     environment:
       - GOPATH=/opt/gopath
@@ -246,7 +256,7 @@ services:
     command: /bin/bash
     volumes:
         - /var/run/:/host/var/run/
-        - ./../chaincode/:/opt/gopath/src/github.com/
         - ./crypto-config/peerOrganizations/orgp1.example.com/users:/etc/hyperledger/fabric/users
+        - ./config:/etc/hyperledger/configtx
     networks:
         - basic
