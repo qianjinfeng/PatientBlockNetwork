@@ -1,0 +1,252 @@
+#
+# Copyright IBM Corp All Rights Reserved
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+version: '2'
+
+networks:
+  basic:
+
+services:
+  orderer.example.com:
+    container_name: orderer.example.com
+    image: hyperledger/fabric-orderer
+    environment:
+      - FABRIC_LOGGING_SPEC=info
+      - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_GENESISMETHOD=file
+      - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/fabric/genesis.block
+      - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+      - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/fabric/msp
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
+    command: orderer
+    ports:
+      - 7050:7050
+    volumes:
+        - ./config/:/etc/hyperledger/fabric
+        - ./crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/etc/hyperledger/fabric/msp
+    networks:
+      - basic
+  
+  couchdbh1:
+    container_name: couchdbh1
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    ports:
+      - 5984:5984
+    networks:
+      - basic
+  
+  peer0.orgh1.example.com:
+    container_name: peer0.orgh1.example.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.orgh1.example.com
+      - CORE_PEER_LOCALMSPID=OrgH1MSP
+      - CORE_PEER_ADDRESS=peer0.orgh1.example.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.orgh1.example.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.orgh1.example.com:7051
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbh1:5984
+    ports:
+      - 7051:7051
+      - 7053:7053
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/orgh1.example.com/peers/peer0.orgh1.example.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/orgh1.example.com/peers/peer0.orgh1.example.com/tls:/etc/hyperledger/fabric/tls
+        - ./crypto-config/peerOrganizations/orgh1.example.com/users:/etc/hyperledger/fabric/users
+        - ./config:/etc/hyperledger/configtx
+    depends_on:
+      - orderer.example.com
+      - couchdbh1
+    networks:
+      - basic
+
+  couchdbh2:
+    container_name: couchdbh2
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    ports:
+      - 6984:5984
+    networks:
+      - basic
+
+  peer0.orgh2.example.com:
+    container_name: peer0.orgh2.example.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.orgh2.example.com
+      - CORE_PEER_LOCALMSPID=OrgH2MSP
+      - CORE_PEER_ADDRESS=peer0.orgh2.example.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.orgh2.example.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.orgh2.example.com:7051
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbh2:5984
+    ports:
+      - 8051:7051
+      - 8053:7053
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/orgh2.example.com/peers/peer0.orgh2.example.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/orgh2.example.com/peers/peer0.orgh2.example.com/tls:/etc/hyperledger/fabric/tls
+        - ./crypto-config/peerOrganizations/orgh2.example.com/users:/etc/hyperledger/fabric/users
+        - ./config:/etc/hyperledger/configtx
+    depends_on:
+      - orderer.example.com
+      - couchdbh2
+    networks:
+      - basic
+
+  couchdbp1:
+    container_name: couchdbp1
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    ports:
+      - 7984:5984
+    networks:
+      - basic
+   
+  peer0.orgp1.example.com:
+    container_name: peer0.orgp1.example.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.orgp1.example.com
+      - CORE_PEER_LOCALMSPID=OrgP1MSP
+      - CORE_PEER_ADDRESS=peer0.orgp1.example.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.orgp1.example.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.orgp1.example.com:7051
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbp1:5984
+    ports:
+      - 9051:7051
+      - 9053:7053
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/orgp1.example.com/peers/peer0.orgp1.example.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/orgp1.example.com/peers/peer0.orgp1.example.com/tls:/etc/hyperledger/fabric/tls
+        - ./crypto-config/peerOrganizations/orgp1.example.com/users:/etc/hyperledger/fabric/users
+        - ./config:/etc/hyperledger/configtx
+    depends_on:
+      - orderer.example.com
+      - couchdbp1
+    networks:
+      - basic 
+  
+  couchdbw0:
+    container_name: couchdbw0
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    ports:
+      - 8984:5984
+    networks:
+      - basic
+  
+  peer0.orgw.example.com:
+    container_name: peer0.orgw.example.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.orgw.example.com
+      - CORE_PEER_LOCALMSPID=OrgWMSP
+      - CORE_PEER_ADDRESS=peer0.orgw.example.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.orgw.example.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.orgw.example.com:7051
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbw0:5984
+    ports:
+      - 9051:7051
+      - 9053:7053
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/orgw.example.com/peers/peer0.orgw.example.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/orgw.example.com/peers/peer0.orgw.example.com/tls:/etc/hyperledger/fabric/tls
+        - ./crypto-config/peerOrganizations/orgw.example.com/users:/etc/hyperledger/fabric/users
+        - ./config:/etc/hyperledger/configtx
+    depends_on:
+      - orderer.example.com
+      - couchdbw0
+    networks:
+      - basic   
+  
+  couchdbw1:
+    container_name: couchdbw1
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    ports:
+      - 9984:5984
+    networks:
+      - basic
+  
+  peer1.orgw.example.com:
+    container_name: peer1.orgw.example.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.orgw.example.com
+      - CORE_PEER_LOCALMSPID=OrgWMSP
+      - CORE_PEER_ADDRESS=peer1.orgw.example.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.orgw.example.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.orgw.example.com:7051
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdbw1:5984
+    ports:
+      - 10051:7051
+      - 10053:7053
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./crypto-config/peerOrganizations/orgw.example.com/peers/peer1.orgw.example.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/orgw.example.com/peers/peer1.orgw.example.com/tls:/etc/hyperledger/fabric/tls
+        - ./crypto-config/peerOrganizations/orgw.example.com/users:/etc/hyperledger/fabric/users
+        - ./config:/etc/hyperledger/configtx
+    depends_on:
+      - orderer.example.com
+      - couchdbw1
+    networks:
+      - basic     
+
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools
+    tty: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=info
+      - CORE_PEER_ID=cli
+      - CORE_PEER_ADDRESS=peer0.orgp1.example.com:7051
+      - CORE_PEER_LOCALMSPID=OrgP1MSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/users/Admin@orgp1.example.com/msp
+      - CORE_CHAINCODE_KEEPALIVE=10
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+        - /var/run/:/host/var/run/
+        - ./../chaincode/:/opt/gopath/src/github.com/
+        - ./crypto-config/peerOrganizations/orgp1.example.com/users:/etc/hyperledger/fabric/users
+    networks:
+        - basic
