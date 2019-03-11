@@ -249,6 +249,7 @@ services:
     container_name: cli
     image: hyperledger/fabric-tools:$IMAGE_TAG
     tty: true
+    stdin_open: true
     environment:
       - GOPATH=/opt/gopath
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -268,5 +269,6 @@ services:
         - ./crypto-config/peerOrganizations/orgh2.example.com:/etc/hyperledger/fabric/orgh2
         - ./crypto-config/peerOrganizations/orgp1.example.com:/etc/hyperledger/fabric/orgp1
         - ./crypto-config/peerOrganizations/orgw.example.com:/etc/hyperledger/fabric/orgw
+        - ./script:/opt/gopath/src/github.com/hyperledger/fabric/peer
     networks:
         - basic

@@ -8,8 +8,14 @@
 set -e
 export IMAGE_TAG=latest
 
+echo Shut downg logspout
+docker kill logspout 2> /dev/null 1>&2 || true
+docker rm logspout 2> /dev/null 1>&2 || true
+
 # Shut down the Docker containers for the system tests.
 docker-compose -f docker-compose.yml kill && docker-compose -f docker-compose.yml down
+
+
 
 # remove the local state
 rm -f ~/.hfc-key-store/*

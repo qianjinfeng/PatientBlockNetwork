@@ -20,3 +20,9 @@ docker-compose -f docker-compose.yml up -d
 # incase of errors when running later commands, issue export FABRIC_START_TIMEOUT=<larger number>
 export FABRIC_START_TIMEOUT=10
 sleep ${FABRIC_START_TIMEOUT}
+
+docker exec cli /bin/bash channel-setup.sh patientchannel
+if [ $? -ne 0 ]; then
+    echo "ERROR !!!! failed to setup channel"
+    exit 1
+fi
