@@ -23,7 +23,8 @@ services:
       - ORDERER_GENERAL_TLS_ENABLED=true
       - ORDERER_GENERAL_TLS_PRIVATEKEY=/etc/hyperledger/fabric/tls/server.key
       - ORDERER_GENERAL_TLS_CERTIFICATE=/etc/hyperledger/fabric/tls/server.crt
-      - ORDERER_GENERAL_TLS_ROOTCAS=[/etc/hyperledger/fabric/tls/ca.crt, /etc/hyperledger/fabric/orgh1/tls/ca.crt, /etc/hyperledger/fabric/orgh2/tls/ca.crt, /etc/hyperledger/fabric/orgp1/tls/ca.crt, /etc/hyperledger/fabric/orgw/tls/ca.crt]
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/etc/hyperledger/fabric/tls/ca.crt]
+      #, /etc/hyperledger/fabric/orgh1/tls/ca.crt, /etc/hyperledger/fabric/orgh2/tls/ca.crt, /etc/hyperledger/fabric/orgp1/tls/ca.crt, /etc/hyperledger/fabric/orgw/tls/ca.crt
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
     command: orderer
     ports:
@@ -73,6 +74,7 @@ services:
         - ./crypto-config/peerOrganizations/orgh1.example.com/peers/peer0.orgh1.example.com/tls:/etc/hyperledger/fabric/tls
         - ./crypto-config/peerOrganizations/orgh1.example.com/users:/etc/hyperledger/fabric/users
         - ./config:/etc/hyperledger/configtx
+        - ./crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com:/etc/hyperledger/fabric/orderer
     depends_on:
       - orderer.example.com
       - couchdbh1
@@ -113,6 +115,7 @@ services:
         - ./crypto-config/peerOrganizations/orgh2.example.com/peers/peer0.orgh2.example.com/tls:/etc/hyperledger/fabric/tls
         - ./crypto-config/peerOrganizations/orgh2.example.com/users:/etc/hyperledger/fabric/users
         - ./config:/etc/hyperledger/configtx
+        - ./crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com:/etc/hyperledger/fabric/orderer
     depends_on:
       - orderer.example.com
       - couchdbh2
@@ -153,6 +156,7 @@ services:
         - ./crypto-config/peerOrganizations/orgp1.example.com/peers/peer0.orgp1.example.com/tls:/etc/hyperledger/fabric/tls
         - ./crypto-config/peerOrganizations/orgp1.example.com/users:/etc/hyperledger/fabric/users
         - ./config:/etc/hyperledger/configtx
+        - ./crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com:/etc/hyperledger/fabric/orderer
     depends_on:
       - orderer.example.com
       - couchdbp1
@@ -193,6 +197,7 @@ services:
         - ./crypto-config/peerOrganizations/orgw.example.com/peers/peer0.orgw.example.com/tls:/etc/hyperledger/fabric/tls
         - ./crypto-config/peerOrganizations/orgw.example.com/users:/etc/hyperledger/fabric/users
         - ./config:/etc/hyperledger/configtx
+        - ./crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com:/etc/hyperledger/fabric/orderer
     depends_on:
       - orderer.example.com
       - couchdbw0
@@ -233,6 +238,7 @@ services:
         - ./crypto-config/peerOrganizations/orgw.example.com/peers/peer1.orgw.example.com/tls:/etc/hyperledger/fabric/tls
         - ./crypto-config/peerOrganizations/orgw.example.com/users:/etc/hyperledger/fabric/users
         - ./config:/etc/hyperledger/configtx
+        - ./crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com:/etc/hyperledger/fabric/orderer
     depends_on:
       - orderer.example.com
       - couchdbw1
@@ -248,15 +254,19 @@ services:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - FABRIC_LOGGING_SPEC=info
       - CORE_PEER_ID=cli
-      - CORE_PEER_ADDRESS=peer0.orgp1.example.com:7051
-      - CORE_PEER_LOCALMSPID=OrgP1MSP
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/users/Admin@orgp1.example.com/msp
+#      - CORE_PEER_ADDRESS=peer0.orgp1.example.com:7051
+#      - CORE_PEER_LOCALMSPID=OrgP1MSP
+#      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/orgp1/users/Admin@orgp1.example.com/msp
       - CORE_CHAINCODE_KEEPALIVE=10
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: /bin/bash
     volumes:
         - /var/run/:/host/var/run/
-        - ./crypto-config/peerOrganizations/orgp1.example.com/users:/etc/hyperledger/fabric/users
         - ./config:/etc/hyperledger/configtx
+        - ./crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com:/etc/hyperledger/fabric/orderer
+        - ./crypto-config/peerOrganizations/orgh1.example.com:/etc/hyperledger/fabric/orgh1
+        - ./crypto-config/peerOrganizations/orgh2.example.com:/etc/hyperledger/fabric/orgh2
+        - ./crypto-config/peerOrganizations/orgp1.example.com:/etc/hyperledger/fabric/orgp1
+        - ./crypto-config/peerOrganizations/orgw.example.com:/etc/hyperledger/fabric/orgw
     networks:
         - basic

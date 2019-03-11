@@ -54,3 +54,10 @@ if [ "$?" -ne 0 ]; then
   echo "Failed to generate anchor peer update for OrgH2MSP..."
   exit 1
 fi
+
+# generate anchor peer transaction
+configtxgen -profile PatientChannel -outputAnchorPeersUpdate ./config/OrgWMSPanchors.tx -channelID $CHANNEL_NAME -asOrg OrgWMSP
+if [ "$?" -ne 0 ]; then
+  echo "Failed to generate anchor peer update for OrgWMSP..."
+  exit 1
+fi
