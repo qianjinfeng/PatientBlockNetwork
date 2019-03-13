@@ -255,10 +255,14 @@ services:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - FABRIC_LOGGING_SPEC=info
       - CORE_PEER_ID=cli
-#      - CORE_PEER_ADDRESS=peer0.orgp1.example.com:7051
-#      - CORE_PEER_LOCALMSPID=OrgP1MSP
-#      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/orgp1/users/Admin@orgp1.example.com/msp
+      - CORE_PEER_ADDRESS=peer0.orgp1.example.com:7051
+      - CORE_PEER_LOCALMSPID=OrgP1MSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/orgp1/users/Admin@orgp1.example.com/msp
       - CORE_CHAINCODE_KEEPALIVE=10
+      - CLI_DELAY=5
+      - CHANNEL_NAME=patientchannel
+      - CORE_PEER_TLS_ENABLED=true
+      - ORDERER_CA=/etc/hyperledger/fabric/orderer/msp/tlscacerts/tlsca.example.com-cert.pem
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: /bin/bash
     volumes:
@@ -269,6 +273,6 @@ services:
         - ./crypto-config/peerOrganizations/orgh2.example.com:/etc/hyperledger/fabric/orgh2
         - ./crypto-config/peerOrganizations/orgp1.example.com:/etc/hyperledger/fabric/orgp1
         - ./crypto-config/peerOrganizations/orgw.example.com:/etc/hyperledger/fabric/orgw
-        - ./script:/opt/gopath/src/github.com/hyperledger/fabric/peer
+        - ./script:/opt/gopath/src/github.com/hyperledger/fabric/peer/script
     networks:
         - basic
