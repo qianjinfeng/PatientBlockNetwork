@@ -59,6 +59,11 @@ transaction CreateRecord {
     --> Patient aPatient
 }
 
+/**
+ * JUST FOR INITIALIZING A DEMO
+ */
+transaction SetupDemo {
+}
 
 event CreateRecordEvent {
   --> MedicalRecord aRecord

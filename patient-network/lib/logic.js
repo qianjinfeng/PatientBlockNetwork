@@ -41,3 +41,12 @@ async function CreateRecord(tx_request) {
     createRecordEvent.aRecord = aRecord;
     emit(createRecordEvent);
 }
+
+/**
+ * Setup the demo
+ * @param {org.example.patientnewtork.SetupDemo} setupDemo - the SetupDemo transaction
+ * @transaction
+ */
+async function setupDemo(setupDemo) { // eslint-disable-line no-unused-vars
+    console.log('setupDemo');
+}
