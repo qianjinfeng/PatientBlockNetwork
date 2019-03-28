@@ -15,19 +15,28 @@
 /**
  * Sample access control list.
  */
-rule OwnerHasFullAccessToTheirAssets {
-    description: "Allow all participants read access to all resources"
-    participant: "org.example.patientnewtork.Patient"
+rule OwnerHasAccessToTheirAssets {
+    description: "Allow the owner read access to their records"
+    participant(p): "org.example.patientnewtork.Patient"
     operation: READ
-    resource: "org.example.patientnewtork.MedicalRecord"
+    resource(m): "org.example.patientnewtork.MedicalRecord"
+    condition: (m.owner.getIdentifier() == p.getIdentifier())
     action: ALLOW
 }
 
-rule CreatorCanSubmitTransactions {
-    description: "Allow all participants to submit transactions"
+rule DoctorCanSubmitTransactions {
+    description: "Allow all doctors to submit transactions"
     participant: "org.example.patientnewtork.Doctor"
     operation: CREATE
     resource: "org.example.patientnewtork.CreateRecord"
+    action: ALLOW
+}
+
+rule DoctorACL {
+    description: "Allow all doctors to access to "
+    participant: "org.example.patientnewtork.Doctor"
+    operation: ALL
+    resource: "org.example.patientnewtork.MedicalRecord"
     action: ALLOW
 }
 
