@@ -7,8 +7,14 @@ Patient data on BlockNetwork
        channel-setup.sh
 3. monitordocker.sh     monitor logs of containders at the same network
 
+in client directory
+startBusinessNetwork.sh
+setupBusinessNetwork.sh
+
 5. stop.sh      stop docker containers
 6. teardown.sh  remove intermediate docker images
+
+
 
 
 
