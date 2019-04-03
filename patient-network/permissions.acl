@@ -12,15 +12,29 @@
  * limitations under the License.
  */
 
-/**
- * Sample access control list.
- */
-rule OwnerHasAccessToTheirAssets {
+rule OwnerCanReadTheirAssets {
     description: "Allow the owner read access to their records"
     participant(p): "org.example.patientnewtork.Patient"
     operation: READ
-    resource(m): "org.example.patientnewtork.MedicalRecord"
-    condition: (m.owner.getIdentifier() == p.getIdentifier())
+    resource(r): "org.example.patientnewtork.MedicalRecord"
+    condition: (r.owner.getIdentifier() == p.getIdentifier())
+    action: ALLOW
+}
+
+rule DoctorCanReadAll {
+    description: "Allow all doctors to operate patients record"
+    participant: "org.example.patientnewtork.Doctor"
+    operation: READ
+    resource: "org.example.patientnewtork.MedicalRecord"
+    action: ALLOW
+}
+
+rule CreatorCanOperateAll {
+    description: "Allow all doctors to operate patients record"
+    participant(p): "org.example.patientnewtork.Doctor"
+    operation: ALL
+    resource(r): "org.example.patientnewtork.MedicalRecord"
+    condition: (r.creator.getIdentifier() == p.getIdentifier())
     action: ALLOW
 }
 
@@ -32,11 +46,12 @@ rule DoctorCanSubmitTransactions {
     action: ALLOW
 }
 
-rule DoctorACL {
-    description: "Allow all doctors to access to "
-    participant: "org.example.patientnewtork.Doctor"
+rule ParticipantsSeeSelves {
+    description: "Let participants see themselves"
+    participant(p): "org.hyperledger.composer.system.Participant"
     operation: ALL
-    resource: "org.example.patientnewtork.MedicalRecord"
+    resource(r): "org.hyperledger.composer.system.Participant"
+    condition: (r.getIdentifier() == p.getIdentifier())
     action: ALLOW
 }
 

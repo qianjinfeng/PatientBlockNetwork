@@ -36,20 +36,18 @@ asset MedicalRecord identified by recordId {
     --> Patient owner
 }
 
-abstract participant Person {
+abstract participant Person identified by id {
+  o String id
   o String name  optional
   o String mobilePhone  optional
   o String city optional
 }
-participant Patient identified by patientId extends Person {
-    o String patientId
+participant Patient extends Person {
 }
-participant Doctor identified by doctorId extends Person {
-    o String doctorId
+participant Doctor  extends Person {
     o String hospital
 }
-participant Researcher identified by researcherId extends Person {
-    o String researcherId
+participant Researcher  extends Person {
     o String institution
 }
 
