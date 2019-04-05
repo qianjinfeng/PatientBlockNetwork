@@ -7,11 +7,11 @@
         "connection": {
             "timeout": {
                 "peer": {
-                    "endorser": "900",
-                    "eventHub": "900",
-                    "eventReg": "900"
+                    "endorser": "1500",
+                    "eventHub": "1500",
+                    "eventReg": "1500"
                 },
-                "orderer": "900"
+                "orderer": "1500"
             }
         }
     },

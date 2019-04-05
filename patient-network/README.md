@@ -29,7 +29,7 @@ export COMPOSER_PROVIDERS='{
     "failureRedirect": "/"
   }
 }'
-composer-rest-server -c patientadmin@patient-network -a true -m true
+composer-rest-server -c patientadmin@patient-network -a true -m true -w true
 
 
  http://localhost:3000/auth/github
