@@ -38,4 +38,10 @@ composer-rest-server -c patientadmin@patient-network -a true -m true -w true
 Import the business network card into the wallet by calling the POST /wallet/import 
 navigate to the REST API explorer at http://localhost:3000/explorer/ call one of the business network REST API operations 
 
+10.
+in angular-app
+npm install
+npm start
+http://localhost:4200
+
 
