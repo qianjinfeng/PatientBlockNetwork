@@ -29,11 +29,16 @@ export COMPOSER_PROVIDERS='{
     "failureRedirect": "/"
   }
 }'
-composer-rest-server -c patientadmin@patient-network -a true -m true -w true
+composer-rest-server -c patientadmin@patient-network -a true -m true -w true 
+-n never: http://localhost:3000/explorer/ will not accessible but http://localhost:3000/api/xxx OK
 
 
- http://localhost:3000/auth/github
- -->  http://localhost:3000/explorer/
+authorize
+http://localhost:3000/auth/github 
+use card
+http://localhost:3000/api/wallet/import  
+Access api
+http://localhost:3000/api/xxx
 
 Import the business network card into the wallet by calling the POST /wallet/import 
 navigate to the REST API explorer at http://localhost:3000/explorer/ call one of the business network REST API operations 

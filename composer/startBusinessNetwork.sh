@@ -20,7 +20,7 @@ composer card create -p ./doctor/connection.json -u PeerAdmin -c ./doctor/Admin@
 sleep 2
 composer card import -f PeerAdmin@patient-network-orgh1.card --card PeerAdmin@patient-network-orgh1
 
-#install chaincode 
+#install chaincode, add npmrcfile to speed up network start
 composer network install --card PeerAdmin@patient-network-orgp1 --archiveFile ../patient-network/patient-network@0.0.1.bna -o npmrcFile=./npmConfig
 sleep 5
 composer network install --card PeerAdmin@patient-network-orgh1 --archiveFile ../patient-network/patient-network@0.0.1.bna -o npmrcFile=./npmConfig
