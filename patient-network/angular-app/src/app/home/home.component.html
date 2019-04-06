@@ -11,8 +11,92 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<div class="container">
+<!-- <div class="container">
 	<div class="jumbotron">
 		<h1>angular-app</h1>
 	</div>
-</div>
+</div> -->
+
+
+<div class="container">
+	<div class="row">  
+	   <h1 class="heading">Welcome to Decentralized Energy using Hyperledger Fabric and Composer</h1>
+	</div> 
+  
+	<div class="row">
+	  <br>
+	</div> 
+  
+	<div class="row bodytext">       
+		<div class="col-md-12">
+		  <p class=""> This Blockchain application demonstrates energy sharing on a network among 'Residents' on a grid. The energy trade is based on exchanging coins for energy provided. The network also includes 'Utility Companies' to trade excess energy with or obtain energy from, and 'Banks' to exchange cash (fiat money) for coins.  </p>
+		  <p class=""> Find more detail <a [routerLink]="['/About']" > about the application. </a> </p>
+  
+		</div>
+	  </div> 
+  
+	<div class="row">
+	  <br>
+	</div> 
+  
+	<div class="row">
+	  <div class="participant col-md-4">
+		<p> <strong>Hospital</strong> create medical record and view history record of a patient.</p>
+		<a [routerLink]="['/Resident']" class=participantButton>10th Hospital</a> 
+	  </div>      
+	  <div class=" col-md-4">
+	  </div> 
+
+	  <div class="participant col-md-4">
+		<p> <strong>Hospital</strong> create medical record and view history record of a patient.</p>
+		<a [routerLink]="['/Resident']" class=participantButton>RenJi Hospital</a> 
+	  </div> 
+	
+	</div> 
+  
+	<div class="row">
+	  <br>
+	</div> 
+  
+  
+  
+	<div class="row"> 
+	  <div class=" col-md-4">
+	  </div> 
+
+	  <div class="participant col-md-4">
+		<p> <strong>Patient</strong> view own history record </p>
+		<a [routerLink]="['/TransactionRR']" class=participantButton>Li Si</a> 
+	  </div>       
+	  
+	  <div class=" col-md-4">
+	  </div> 
+	  
+	</div> 
+
+	<div class="row">
+		<br>
+	  </div> 
+
+	<div class="row"> 
+		<div class=" col-md-4">
+		</div> 
+  
+		<div class="participant col-md-4">
+		  <p> <strong>Researcher</strong> utilitize patient record after granted access </p>
+		  <a [routerLink]="['/TransactionRR']" class=participantButton>AI Pathway</a> 
+		</div>       
+		
+		<div class=" col-md-4">
+		</div> 
+		
+	  </div> 
+  
+	<div class="row">
+	  <br>
+	</div> 
+	<div class="row">
+	  <br>
+	</div> 
+  
+  </div>
