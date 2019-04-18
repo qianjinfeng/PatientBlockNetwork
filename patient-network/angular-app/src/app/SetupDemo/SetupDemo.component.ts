@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { SetupDemoService } from './SetupDemo.service';
 import 'rxjs/add/operator/toPromise';
@@ -47,26 +47,16 @@ export class SetupDemoComponent implements OnInit {
     this.loadAll();
   }
 
-  loadAll(): Promise<any> {
+  loadAll(): any {
     const tempList = [];
     return this.serviceSetupDemo.getAll()
-    .toPromise()
-    .then((result) => {
+    .subscribe((result) => {
       this.errorMessage = null;
       result.forEach(transaction => {
         tempList.push(transaction);
       });
       this.allTransactions = tempList;
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
-      }
-    });
+    }, error => this.errorMessage = error);
   }
 
 	/**
@@ -94,7 +84,7 @@ export class SetupDemoComponent implements OnInit {
     return this[name].value.indexOf(value) !== -1;
   }
 
-  addTransaction(form: any): Promise<any> {
+  addTransaction(form: any): any {
     this.Transaction = {
       $class: 'org.example.patientnewtork.SetupDemo',
       'transactionId': this.transactionId.value,
@@ -107,72 +97,43 @@ export class SetupDemoComponent implements OnInit {
     });
 
     return this.serviceSetupDemo.addTransaction(this.Transaction)
-    .toPromise()
-    .then(() => {
+    .subscribe(() => {
       this.errorMessage = null;
       this.myForm.setValue({
         'transactionId': null,
         'timestamp': null
       });
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else {
-        this.errorMessage = error;
-      }
-    });
+    }, error => this.errorMessage = error);
   }
 
-  updateTransaction(form: any): Promise<any> {
+  updateTransaction(form: any): any {
     this.Transaction = {
       $class: 'org.example.patientnewtork.SetupDemo',
       'timestamp': this.timestamp.value
     };
 
     return this.serviceSetupDemo.updateTransaction(form.get('transactionId').value, this.Transaction)
-    .toPromise()
-    .then(() => {
+    .subscribe(() => {
       this.errorMessage = null;
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-      this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
-      }
-    });
+    }, error => this.errorMessage = error);
   }
 
-  deleteTransaction(): Promise<any> {
+  deleteTransaction(): any {
 
     return this.serviceSetupDemo.deleteTransaction(this.currentId)
-    .toPromise()
-    .then(() => {
+    .subscribe(() => {
       this.errorMessage = null;
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
-      }
-    });
+    }, error => this.errorMessage = error);
   }
 
   setId(id: any): void {
     this.currentId = id;
   }
 
-  getForm(id: any): Promise<any> {
+  getForm(id: any): any {
 
     return this.serviceSetupDemo.getTransaction(id)
-    .toPromise()
-    .then((result) => {
+    .subscribe((result) => {
       this.errorMessage = null;
       const formObject = {
         'transactionId': null,
@@ -193,16 +154,7 @@ export class SetupDemoComponent implements OnInit {
 
       this.myForm.setValue(formObject);
 
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-      this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
-      }
-    });
+    }, error => this.errorMessage = error);
   }
 
   resetForm(): void {

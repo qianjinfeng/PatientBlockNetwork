@@ -54,26 +54,17 @@ export class MedicalRecordComponent implements OnInit {
     this.loadAll();
   }
 
-  loadAll(): Promise<any> {
+  loadAll(): any {
     const tempList = [];
-    return this.serviceMedicalRecord.getAll()
-    .toPromise()
-    .then((result) => {
-      this.errorMessage = null;
-      result.forEach(asset => {
-        tempList.push(asset);
-      });
-      this.allAssets = tempList;
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
-      }
-    });
+    return this.serviceMedicalRecord.getAll().subscribe(
+      result => { 
+        result.forEach(asset => {
+          tempList.push(asset);
+        });
+        this.allAssets = tempList;
+      }, 
+      error => this.errorMessage = error
+    );
   }
 
 	/**
@@ -101,7 +92,7 @@ export class MedicalRecordComponent implements OnInit {
     return this[name].value.indexOf(value) !== -1;
   }
 
-  addAsset(form: any): Promise<any> {
+  addAsset(form: any):any {
     this.asset = {
       $class: 'org.example.patientnewtork.MedicalRecord',
       'recordId': this.recordId.value,
@@ -122,9 +113,8 @@ export class MedicalRecordComponent implements OnInit {
     });
 
     return this.serviceMedicalRecord.addAsset(this.asset)
-    .toPromise()
-    .then(() => {
-      this.errorMessage = null;
+    .subscribe((error) => {
+      this.errorMessage = error;
       this.myForm.setValue({
         'recordId': null,
         'creationTime': null,
@@ -134,18 +124,18 @@ export class MedicalRecordComponent implements OnInit {
         'owner': null
       });
       this.loadAll();
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-          this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else {
-          this.errorMessage = error;
-      }
     });
+    // .catch((error) => {
+    //   if (error === 'Server error') {
+    //       this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
+    //   } else {
+    //       this.errorMessage = error;
+    //   }
+    // });
   }
 
 
-  updateAsset(form: any): Promise<any> {
+  updateAsset(form: any): any {
     this.asset = {
       $class: 'org.example.patientnewtork.MedicalRecord',
       'creationTime': this.creationTime.value,
@@ -156,39 +146,19 @@ export class MedicalRecordComponent implements OnInit {
     };
 
     return this.serviceMedicalRecord.updateAsset(form.get('recordId').value, this.asset)
-    .toPromise()
-    .then(() => {
-      this.errorMessage = null;
+    .subscribe((error) => {
+      this.errorMessage = error;
       this.loadAll();
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
-      }
     });
   }
 
 
-  deleteAsset(): Promise<any> {
+  deleteAsset(): any {
 
     return this.serviceMedicalRecord.deleteAsset(this.currentId)
-    .toPromise()
-    .then(() => {
-      this.errorMessage = null;
+    .subscribe((error) => {
+      this.errorMessage = error;
       this.loadAll();
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
-      }
     });
   }
 
@@ -196,11 +166,10 @@ export class MedicalRecordComponent implements OnInit {
     this.currentId = id;
   }
 
-  getForm(id: any): Promise<any> {
+  getForm(id: any): any {
 
     return this.serviceMedicalRecord.getAsset(id)
-    .toPromise()
-    .then((result) => {
+    .subscribe((result) => {
       this.errorMessage = null;
       const formObject = {
         'recordId': null,
@@ -249,16 +218,7 @@ export class MedicalRecordComponent implements OnInit {
 
       this.myForm.setValue(formObject);
 
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
-      }
-    });
+    }, (error) => this.errorMessage = error);
   }
 
   resetForm(): void {

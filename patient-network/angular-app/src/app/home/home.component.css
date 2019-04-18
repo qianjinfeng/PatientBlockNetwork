@@ -39,6 +39,72 @@ h3 {
     border-width: 2px;  */
 }
 
+
+.network-container {
+    width: 100%;
+    height: 600px;
+    position: relative;
+  }
+  .network-container .network-circle {
+    width: 75%;
+    height: 75%;
+    border-radius: 50%;
+    border: 10px dashed #648fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .network-container .ibm-card {
+    position: absolute;
+  }
+  .network-container .ibm-card::after {
+    background-repeat: no-repeat;
+    background-size: 90% 90%;
+    background-position: 350% 300%;
+    position: absolute;
+    content: "";
+    opacity: 0.5;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+  }
+  .network-container .ibm-card.hospital1-peer {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  /* .network-container .ibm-card.hospital1-peer::after {
+    background-color: #162b79;
+  } */
+  .network-container .ibm-card.institution-peer {
+    top: 50%;
+    right: 10%;
+    transform: translateY(-50%);
+  }
+  /* .network-container .ibm-card.institution-peer::after {
+    background-color: green;
+  } */
+  .network-container .ibm-card.patient-peer {
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  /* .network-container .ibm-card.patient-peer::after {
+    background-color: green;
+  } */
+  .network-container .ibm-card.hospital2-peer {
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  /* .network-container .ibm-card.hospital2-peer::after {
+    background-color: green;
+  } */
+
+  
 .participant {
     border-style: inset;
     background-color: white;

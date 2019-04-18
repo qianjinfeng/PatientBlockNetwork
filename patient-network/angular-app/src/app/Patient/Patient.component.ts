@@ -51,25 +51,16 @@ export class PatientComponent implements OnInit {
     this.loadAll();
   }
 
-  loadAll(): Promise<any> {
+  loadAll(): any {
     const tempList = [];
     return this.servicePatient.getAll()
-    .toPromise()
-    .then((result) => {
+    .subscribe((result) => {
       this.errorMessage = null;
       result.forEach(participant => {
         tempList.push(participant);
       });
       this.allParticipants = tempList;
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-        this.errorMessage = error;
-      }
-    });
+    }, error => this.errorMessage = error );
   }
 
 	/**
@@ -97,7 +88,7 @@ export class PatientComponent implements OnInit {
     return this[name].value.indexOf(value) !== -1;
   }
 
-  addParticipant(form: any): Promise<any> {
+  addParticipant(form: any): any {
     this.participant = {
       $class: 'org.example.patientnewtork.Patient',
       'id': this.id.value,
@@ -114,8 +105,7 @@ export class PatientComponent implements OnInit {
     });
 
     return this.servicePatient.addParticipant(this.participant)
-    .toPromise()
-    .then(() => {
+    .subscribe(() => {
       this.errorMessage = null;
       this.myForm.setValue({
         'id': null,
@@ -124,18 +114,11 @@ export class PatientComponent implements OnInit {
         'city': null
       });
       this.loadAll(); 
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else {
-        this.errorMessage = error;
-      }
-    });
+    }, error => this.errorMessage = error);
   }
 
 
-   updateParticipant(form: any): Promise<any> {
+   updateParticipant(form: any): any {
     this.participant = {
       $class: 'org.example.patientnewtork.Patient',
       'name': this.name.value,
@@ -144,51 +127,30 @@ export class PatientComponent implements OnInit {
     };
 
     return this.servicePatient.updateParticipant(form.get('id').value, this.participant)
-    .toPromise()
-    .then(() => {
+    .subscribe(() => {
       this.errorMessage = null;
       this.loadAll();
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
-      }
-    });
+    }, error => this.errorMessage = error);
   }
 
 
-  deleteParticipant(): Promise<any> {
+  deleteParticipant(): any {
 
     return this.servicePatient.deleteParticipant(this.currentId)
-    .toPromise()
-    .then(() => {
+    .subscribe(() => {
       this.errorMessage = null;
       this.loadAll();
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
-      }
-    });
+    }, error => this.errorMessage = error );
   }
 
   setId(id: any): void {
     this.currentId = id;
   }
 
-  getForm(id: any): Promise<any> {
+  getForm(id: any): any {
 
     return this.servicePatient.getparticipant(id)
-    .toPromise()
-    .then((result) => {
+    .subscribe((result) => {
       this.errorMessage = null;
       const formObject = {
         'id': null,
@@ -222,16 +184,7 @@ export class PatientComponent implements OnInit {
       }
 
       this.myForm.setValue(formObject);
-    })
-    .catch((error) => {
-      if (error === 'Server error') {
-        this.errorMessage = 'Could not connect to REST server. Please check your configuration details';
-      } else if (error === '404 - Not Found') {
-        this.errorMessage = '404 - Could not find API route. Please check your available APIs.';
-      } else {
-        this.errorMessage = error;
-      }
-    });
+    }, error => this.errorMessage = error);
 
   }
 

@@ -50,7 +50,7 @@ Import the business network card into the wallet by calling the POST /wallet/imp
 http://localhost:3000/api/wallet/import  
 
 * Access api
-curl -v -H 'X-Access-Token: yHnPWpNYe0ZWUCAZ7gPs8Tw4VfdypFoUZSvwAnnVeuEqv5MO9JHtyqbYBMWkvh' http://localhost:3000/api/doctor
+curl -v -H 'X-Access-Token: qJNe7c3A6xbFZZA9tCKihYrt5zSMTH8wxrgGYbjeLsgxnA6a3GTFHbsQG6HZuG4J' http://localhost:3000/api/doctor
 
 
 * logout

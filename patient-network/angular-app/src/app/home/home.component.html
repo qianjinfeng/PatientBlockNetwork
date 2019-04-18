@@ -38,58 +38,44 @@
 	  <br>
 	</div> 
   
-	<div class="row">
-	  <div class="participant col-md-4">
-		<p> <strong>Hospital</strong> create medical record and view history record of a patient.</p>
-		<a [routerLink]="['/Resident']" class=participantButton>10th Hospital</a> 
-	  </div>      
-	  <div class=" col-md-4">
-	  </div> 
-
-	  <div class="participant col-md-4">
-		<p> <strong>Hospital</strong> create medical record and view history record of a patient.</p>
-		<a [routerLink]="['/Resident']" class=participantButton>RenJi Hospital</a> 
-	  </div> 
-	
-	</div> 
-  
-	<div class="row">
-	  <br>
-	</div> 
-  
-  
-  
-	<div class="row"> 
-	  <div class=" col-md-4">
-	  </div> 
-
-	  <div class="participant col-md-4">
-		<p> <strong>Patient</strong> view own history record </p>
-		<a [routerLink]="['/TransactionRR']" class=participantButton>Li Si</a> 
-	  </div>       
-	  
-	  <div class=" col-md-4">
-	  </div> 
-	  
-	</div> 
-
-	<div class="row">
-		<br>
-	  </div> 
-
-	<div class="row"> 
-		<div class=" col-md-4">
-		</div> 
-  
-		<div class="participant col-md-4">
-		  <p> <strong>Researcher</strong> utilitize patient record after granted access </p>
-		  <a [routerLink]="['/TransactionRR']" class=participantButton>AI Pathway</a> 
-		</div>       
-		
-		<div class=" col-md-4">
-		</div> 
-		
-	  </div> 
+	<div class="network-container">
+		<div class="network-circle"></div>
+		<div class="ibm-card hospital1-peer">
+			<div class="ibm-card__content">
+				<a [routerLink]="['/Doctor']">
+					<h3 class="ibm-h3">RenJi Hospital</h3>
+				</a>
+					<p class="ibm-ind-link"><a [routerLink]="['/MedicalRecord']">Create Record</a></p>
+					<p class="ibm-ind-link"><a [routerLink]="['/MedicalRecord']">View Record</a></p>
+			</div>
+		</div>
+		<div class="ibm-card institution-peer">
+			<div class="ibm-card__content">
+				<a [routerLink]="['/Researcher']">
+					<h3 class="ibm-h3">Institution</h3>
+				</a>
+					<p class="ibm-ind-link"><a [routerLink]="['/MedicalRecord']">View Record</a></p>
+			</div>
+		</div>
+		<div class="ibm-card patient-peer">
+			<div class="ibm-card__content">
+				<a [routerLink]="['/Patient']">
+					<h3 class="ibm-h3">Patient</h3>
+				</a>
+				<p class="ibm-ind-link"><a [routerLink]="['/MedicalRecord']">View Record</a></p>
+				<p class="ibm-ind-link"><a class="ibm-forward-link" href="/police">Grant View Acesss</a></p>
+			</div>
+		</div>
+		<div class="ibm-card hospital2-peer">
+			<div class="ibm-card__content">
+				<a [routerLink]="['/Doctor']">
+					<h3 class="ibm-h3">10th People Hospital</h3>
+				</a>
+				<p class="ibm-ind-link"><a [routerLink]="['/MedicalRecord']">Create Record</a></p>
+				<p class="ibm-ind-link"><a [routerLink]="['/MedicalRecord']">View Record</a></p>
+			</div>
+		</div>
+	</div>
   
 	<div class="row">
 	  <br>
