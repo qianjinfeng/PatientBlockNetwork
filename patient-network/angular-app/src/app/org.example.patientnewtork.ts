@@ -42,4 +42,8 @@ import {Event} from './org.hyperledger.composer.system';
    export class CreateRecordEvent extends Event {
       aRecord: MedicalRecord;
    }
+   export class Wallet {
+      name: string;
+      default: boolean;
+   }
 // }
