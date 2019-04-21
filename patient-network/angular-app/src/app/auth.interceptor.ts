@@ -21,6 +21,10 @@ export class AuthInterceptor implements HttpInterceptor {
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
         console.log(req);
+        if (req.url.indexOf('/users/login') !== -1) {
+            return next.handle(req);
+        }
+
         // get the token from a service
         const token: string = this.authService.getAccessToken();
 

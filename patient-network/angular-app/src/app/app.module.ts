@@ -35,6 +35,8 @@ import { ResearcherComponent } from './Researcher/Researcher.component';
 import { CreateRecordComponent } from './CreateRecord/CreateRecord.component';
 import { SetupDemoComponent } from './SetupDemo/SetupDemo.component';
 
+import { WalletComponent } from './Wallet/Wallet.component';
+
   @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +46,8 @@ import { SetupDemoComponent } from './SetupDemo/SetupDemo.component';
     DoctorComponent,
     ResearcherComponent,
     CreateRecordComponent,
-    SetupDemoComponent
+    SetupDemoComponent,
+    WalletComponent
   ],
   imports: [
     BrowserModule,
